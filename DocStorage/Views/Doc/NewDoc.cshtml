@@ -1,0 +1,21 @@
+﻿@model DocStorage.Models.DocDto
+
+<h2>Новый документ</h2>
+
+@using (@Html.BeginForm("NewDoc", "Doc", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        <label>Наименование</label>
+        @Html.TextBoxFor(x => x.Title, new { @class = "form-control"})
+    </div>
+    <div class="form-group">
+        Внутренний
+        @Html.RadioButtonFor(x=>x.DocType, "Внутренний")
+        Внешний
+        @Html.RadioButtonFor(x=>x.DocType, "Внешний")
+    </div>
+    <div class="form-group">
+        <input type="file" name="upload"/>
+    </div>
+    <button class="btn btn-primary" type="submit">Сохранить</button>
+}
