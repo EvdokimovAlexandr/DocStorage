@@ -10,7 +10,7 @@ using System.Web.WebPages;
 
 namespace DocStorage.Controllers
 {
-    public class DocController:Controller
+    public class DocController : Controller
     {
         DocRepo docRepo;
         public DocController()
@@ -18,6 +18,12 @@ namespace DocStorage.Controllers
             this.docRepo = new DocRepo();
         }
         [HttpGet]
+
+        public ActionResult Menu()
+        {
+            return PartialView();
+        }
+
         public ActionResult Index()
         {
             var docs = docRepo.GetDocs();
@@ -38,6 +44,11 @@ namespace DocStorage.Controllers
             Doc doc = GetDoc(docDto);
             var filename = Path.GetFileName(upload.FileName);
             var path = Path.Combine(Server.MapPath("~/DocFiles/"), filename);
+            var folder = Path.GetDirectoryName(path);
+
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+
             upload.SaveAs(path);
             doc.RefFile = Path.Combine("/DocFiles/", filename);
             docRepo.AddDoc(doc);

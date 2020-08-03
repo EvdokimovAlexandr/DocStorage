@@ -4,25 +4,27 @@
     ViewBag.Title = "Список документов";
 }
 
-<h2>Список документов</h2>
-@Html.ActionLink("Новый документ", "NewDoc", "Doc");
+@Html.Partial("Menu")
 
-<table>
+<h2>Список документов</h2>
+<button class="btn btn-light">@Html.ActionLink("Новый документ", "NewDoc", "Doc")</button>
+
+<table class="table">
     <thead>
         <tr>
-            <th>
+            <th scope="col">
                 Название
             </th>
-            <th>
+            <th scope="col">
                 Дата
             </th>
-            <th>
+            <th scope="col">
                 Автор
             </th>
-            <th>
+            <th scope="col">
                 Тип документа
             </th>
-            <th>
+            <th scope="col">
                 Файл
             </th>
         </tr>
@@ -31,7 +33,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(model=>item.Title)
+                @Html.DisplayFor(model => item.Title)
             </td>
             <td>
                 @Html.DisplayFor(model => item.DateOfCreation)
@@ -47,3 +49,4 @@
             </td>
         </tr>
     }
+</table>
