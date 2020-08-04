@@ -21,21 +21,26 @@ namespace DocStorage.Controllers
         public ActionResult Login(LoginDto loginDto)
         {
 
-            var user = IsValidCred(loginDto.Login, loginDto.Password);
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                var userCookie = new HttpCookie("user")
+                var user = IsValidCred(loginDto.Login, loginDto.Password);
+                if (user != null)
                 {
-                    Value = Server.UrlEncode(user.FullName),
-                    Expires = DateTime.Now.AddDays(1)
-                };
-                Response.SetCookie(userCookie);
-                return Redirect("/Doc/Index");
+                    var userCookie = new HttpCookie("user")
+                    {
+                        Value = Server.UrlEncode(user.FullName),
+                        Expires = DateTime.Now.AddDays(1)
+                    };
+                    Response.SetCookie(userCookie);
+                    return Redirect("/Doc/Index");
+                }
+                else
+                {
+                    return View(new LoginDto());
+                }
             }
-            else
-            {
-                return View(new LoginDto());
-            }
+
+            return View(loginDto);
         }
 
         private UserDoc IsValidCred(string login, string password)

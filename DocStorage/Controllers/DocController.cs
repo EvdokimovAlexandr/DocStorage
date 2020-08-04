@@ -41,18 +41,24 @@ namespace DocStorage.Controllers
         public ActionResult NewDoc(DocDto docDto, HttpPostedFileBase upload)
         {
 
-            Doc doc = GetDoc(docDto);
-            var filename = Path.GetFileName(upload.FileName);
-            var path = Path.Combine(Server.MapPath("~/DocFiles/"), filename);
-            var folder = Path.GetDirectoryName(path);
+            if (ModelState.IsValid)
+            {
+                Doc doc = GetDoc(docDto);
+                var filename = Path.GetFileName(upload.FileName);
+                var path = Path.Combine(Server.MapPath("~/DocFiles/"), filename);
+                var folder = Path.GetDirectoryName(path);
 
-            if (!Directory.Exists(folder))
-                Directory.CreateDirectory(folder);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
 
-            upload.SaveAs(path);
-            doc.RefFile = Path.Combine("/DocFiles/", filename);
-            docRepo.AddDoc(doc);
-            return Redirect("/Doc/Index");
+                upload.SaveAs(path);
+                doc.RefFile = Path.Combine("/DocFiles/", filename);
+                docRepo.AddDoc(doc);
+
+                return Redirect("/Doc/Index");
+            }
+
+            return View(docDto);
         }
 
         private Doc GetDoc(DocDto docDto)
